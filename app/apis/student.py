@@ -155,3 +155,14 @@ class Student(Resource):
             return {MSG: "Student not found"}, HTTPStatus.NOT_FOUND
 
         return {MSG: "Student updated"}, HTTPStatus.OK
+    @api.doc("Delete a specific student, identified by email")
+    @api.response(HTTPStatus.NO_CONTENT, "Student deleted")
+    @api.response(HTTPStatus.NOT_FOUND, "Student not found")
+    def delete(self, email):
+        student_resource = StudentResource()
+        student = student_resource.get_student_by_email(email)
+        if student is None:
+            return {MSG: "Student not found"}, HTTPStatus.NOT_FOUND
+        student_resource.delete_student(email)
+        return '', HTTPStatus.NO_CONTENT
+
